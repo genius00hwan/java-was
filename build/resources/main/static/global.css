@@ -1,0 +1,265 @@
+.container {
+  min-width: 1440px;
+  max-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 890px;
+  height: 80px;
+}
+
+.header__menu {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.header__menu__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-title {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 38.19px;
+  padding: 64px 0;
+  text-align: center;
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn.hidden {
+  display: none;
+}
+
+.btn_ghost {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  background: transparent;
+  color: #14212b;
+}
+
+.btn_contained {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 14px;
+  background: #4362d0;
+  color: #ffffff;
+}
+
+.btn_size_s {
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.btn_size_m {
+  padding: 16px;
+  font-size: 16px;
+  line-height: 14px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input_margin {
+  margin-top: 40px;
+}
+
+.textfield {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 1px solid #d2dae0;
+}
+
+.textfield_size_s {
+  gap: 4px;
+  padding: 8px 16px;
+  width: 320px;
+}
+
+.textfield_size_s_wide {
+  gap: 4px;
+  padding: 8px 16px;
+  width: 680px;
+  height: 50px;
+}
+
+.textfield_size_m {
+  gap: 4px;
+  padding: 8px 16px;
+  width: 680px;
+  height: 320px;
+}
+
+
+.title_textfield {
+  height: 14px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  color: #4b5966;
+}
+
+.input_textfield {
+  height: 100%;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25.6px;
+  border-width: 0;
+  outline: none;
+  color: #4b5966;
+  resize: none;
+}
+
+.input_textfield::placeholder {
+  color: #879298;
+}
+
+.textfield__btn {
+  margin-top: 32px;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 14px;
+  background: #4362d0;
+  color: #ffffff;
+  cursor: hover;
+}
+
+.profile_image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: #d9d9d9;
+  overflow: hidden;
+  border: 2px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.profile {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.profile_container {
+  align-self: stretch; 
+  height: 254px; 
+  flex-direction: column; 
+  justify-content: flex-start; 
+  align-items: center; 
+  gap: 8px; 
+  display: flex;
+}
+
+.btn_container {
+  text-align: center;
+  font-size: 14px;
+  color: #4B5966;
+  font-weight: 500;
+  line-height: 14px;
+  word-wrap: break-word;
+}
+
+.btn_profile {
+  padding: 16px; 
+  justify-content: flex-end; 
+  align-items: center; 
+  gap: 10px; 
+  display: flex;
+}
+
+.profile_frame {
+  align-self: stretch; 
+  justify-content: center; 
+  align-items: center; 
+  display: inline-flex;
+}
+.profile_box {
+  align-self: stretch; 
+  height: 254px; 
+  flex-direction: column; 
+  justify-content: flex-start; 
+  align-items: center; 
+  gap: 8px; 
+  display: flex;
+}
+
+.btn_bar {
+  width: 1px; 
+  height: 16px; 
+  background: #D9D9D9;
+}
+
+
+.article-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.article-list__item {
+  padding: 12px 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.article-list__user__nickname {
+  font-weight: bold;
+  color: #555;
+  margin-right: 8px;
+  text-align: left;
+
+}
+
+.article-list__link {
+  text-decoration: none;
+  color: #333;
+  text-align: left;
+
+}
+
+.article-list__link:hover .article-list__title {
+  text-decoration: underline;
+  text-align: left;
+
+}
+
+.article-list__title {
+  font-size: 15px;
+  color: #111;
+  text-align: left;
+}

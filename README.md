@@ -1,4 +1,104 @@
 # 나만의 WAS 만들기 프로젝트
+
+# 나만의 WAS 만들기 — 아키텍처와 설계 의도
+
+요약
+- 이 프로젝트는 학습용으로 구현한 경량 WAS(웹 어플리케이션 서버)이다.
+- 목표는 HTTP 연결 관리, 요청 파이프라인(필터 → 디스패처 → 서블릿), 라우팅/메서드 핸들링, 정적 자원 제공, 최소한의 DI/구성 관리를 통해 실제 WAS 설계 원칙을 체득하는 것이다.
+
+구성 요소 개요
+- `ServerConfig`
+    - 서버 전체 설정과 생명주기 관리(포트, 쓰레드풀 크기 등).
+    - 전역 설정(singleton 성격)으로 구성하여 구성 일관성을 보장.
+
+- `ConnectionManager`
+    - 소켓 수명 관리와 커넥션 풀, Keep-Alive 지원.
+    - 목적: 소켓 재사용으로 비용 절감 및 지속 연결(HTTP Keep-Alive) 처리.
+    - 관련 고려사항: 버퍼드 리더/라이터를 닫는 시점이 소켓에 영향을 미치는 문제를 명시적으로 처리.
+
+- `RequestHandler`
+    - 소켓 단위로 들어온 연결을 HTTP 요청 단위로 파싱하고 응답 반환.
+    - 쓰레드풀로 실행되어 동시성 제어 수행.
+
+- `FilterChain`
+    - 인증/로그인/공통 처리 필터를 체인 형태로 구성.
+    - 패턴: Chain of Responsibility
+    - 의도: 각 필터가 관심사를 분리해 재사용·조합 가능하게 함.
+
+- `Dispatcher` / `AppServlet`
+    - 모든 동적 요청의 진입점 (Front Controller 역할).
+    - 라우팅 후 `MethodHandler`를 호출해 실제 비즈니스 진입.
+    - 패턴: Front Controller + Dispatcher
+
+- `MethodHandler` / 라우터
+    - HTTP 메서드 및 경로 매핑을 담당.
+    - 패턴: Strategy / Command — 경로별(또는 메서드별) 핸들러 전략을 분리해 확장성 제공.
+    - 의도: 새로운 엔드포인트 추가 시 라우팅 테이블만 갱신하면 됨.
+
+- `Facade` (예: `HomeFacade`, `UserFacade`)
+    - 비즈니스 UseCase 집합에 대한 단일 진입점 제공.
+    - 패턴: Facade
+    - 의도: 컨트롤러(핸들러)와 도메인 로직 간 결합을 낮추고, UseCase 호출을 단순화.
+
+- `UseCase` 계층
+    - 실제 비즈니스 로직(예: RenderingUseCase, RegisterUseCase 등).
+    - 의도: 단일 책임 원칙, 테스트 가능성 향상.
+
+- `StaticResourceHandler`
+    - 정적 파일 제공(정적 요청과 동적 요청을 분리).
+    - 목적: 캐싱/콘텐츠 타입 처리 등 별도 최적화 가능.
+
+핵심 디자인 패턴 및 설계 결정 이유
+- Chain of Responsibility (FilterChain)
+    - 요청 전/후 처리를 필터 단위로 분리하여 재사용성과 조합성을 높임.
+
+- Front Controller / Dispatcher
+    - 모든 요청을 중앙에서 제어해 공통 로직(인증, 로깅, 예외 처리 등)을 집중적으로 처리.
+
+- Strategy / Command (MethodHandler / Routing)
+    - 엔드포인트별 행동을 분리해 확장성과 테스트 용이성을 확보.
+
+- Facade + UseCase
+    - 컨트롤러와 도메인 사이의 경계를 명확히 하여 복잡도 완화.
+
+- Connection Pool / Thread Pool
+    - 네트워크·I/O 비용을 고려한 리소스 관리. 적정 쓰레드 수 결정은 실제 블로그 글의 계산 근거를 따름.
+
+운영/성능 고려사항
+- Keep-Alive 전략
+    - 요청 처리 후 연결을 바로 닫지 않고 재사용하도록 관리 — throughput 향상.
+    - 다만 idle connection 관리를 위한 타임아웃, 최대 재사용 횟수 제어 필요.
+
+- BufferedReader/Stream 관리
+    - 스트림을 닫으면 소켓도 닫히는 언어/라이브러리 특성 이해 필요.
+    - 리소스는 try-with-resources 또는 명시적 플래그로 안전하게 관리.
+
+- 쓰레드 수 튜닝
+    - CPU-bound vs I/O-bound 성격에 따라 계산법이 다름(프로젝트 문서의 링크 참조).
+    - 기본은 적정 수의 워커 쓰레드 + 큐로 백프레셔 처리.
+
+확장성 / 유지보수
+- 새로운 필터 추가는 `FilterChain`에 등록하면 됨(비침투적 변경).
+- 새로운 라우트는 `MethodHandler` 매핑에 등록 — 런타임 라우팅 또는 시작 시 설정으로 확장 가능.
+- DIContainer는 최소한의 의존성 주입만 구현(학습 목적). 실제 운영에서는 검증된 DI 프레임워크 권장.
+
+오류 처리 및 응답 정책
+- Not Found(404) 처리: Dispatcher에서 동적·정적 모두 실패 시 일관된 404 응답 반환.
+- 예외 처리: 필터/Dispatcher 레벨에서 Catch 후 5xx 응답으로 변환해 클라이언트에 노출.
+
+테스트 및 검증 포인트
+- 커넥션 재사용(Keep-Alive) 케이스 자동화 테스트.
+- 동시성(동시 연결/요청) 부하 테스트로 쓰레드풀 설정 검증.
+- 라우팅·권한 필터 조합에 대한 단위 테스트(각 필터를 독립적으로 검증).
+
+참고 및 설계 근거
+- 톰캣을 학습 대상으로 선택한 이유: 실제 서버 구조와 운영 고려사항을 이해하기 위함(설명 링크 포함).
+- 프로젝트 내 블로그 글들:
+    - 적정 쓰레드 수 계산, BufferedReader와 소켓 관계, Keep-Alive 관리법, 억지 DI 적용 회고 등은 구현·정책 결정의 근거 자료로 활용됨.
+
+마지막으로
+- 이 WAS는 학습용으로 설계되었으며, 성능·보안·운영성이 중요한 프로덕션 환경에는 추가 검증과 보완이 필요하다.
+- 설계 의도는 명확한 책임 분리(Separation of Concerns), 확장성(Strategy/Facade), 재사용성(Chain)과 안정적인 리소스 관리(Connection/Thread Pool)에 있다.
 ## 설계 다이어그램
 
 ```mermaid

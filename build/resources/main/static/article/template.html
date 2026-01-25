@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="../reset.css" rel="stylesheet" />
+  <link href="../global.css" rel="stylesheet" />
+  <link href="../main.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <a href="/static"><img src="../img/signiture.svg" /></a>
+    <ul class="header__menu">
+      <li class="header__menu__item">
+        <a class="btn btn_contained btn_size_s" href="/article/write">글쓰기</a>
+      </li>
+      <li class="header__menu__item">
+        <form action="/logout" method="post" style="display:inline;">
+          <button class="btn btn_ghost btn_size_s" type="submit">
+            로그아웃
+          </button>
+        </form>
+      </li>
+    </ul>
+  </header>
+  <div class="wrapper">
+    <div class="post">
+      <div class="post__account">
+        <img class="post__account__img" />
+        <p class="post__account__nickname">{{writer}}</p>
+      </div>
+      <div class="post__account">
+        <p class="post__account__nickname">{{title}}</p>
+      </div>
+      <img class="post__img" src="{{image}}" />
+      <div class="post__menu">
+        <ul class="post__menu__personal">
+          <li>
+            <button class="post__menu__btn">
+              <img src="../img/like.svg" />
+            </button>
+          </li>
+          <li>
+            <button class="post__menu__btn">
+              <img src="../img/comment.svg" />
+            </button>
+          </li>
+        </ul>
+        <button class="post__menu__btn">
+          <img src="../img/bookMark.svg" />
+        </button>
+      </div>
+      <p class="post__article">
+        {{content}}
+      </p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

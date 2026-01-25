@@ -17,8 +17,13 @@ import java.util.concurrent.TimeUnit;
 public class ServerConfig {
     private static final Logger logger = LoggerFactory.getLogger(ServerConfig.class);
     private static final int DEFAULT_PORT = 8080;
-    private static final int THREAD_POOL_SIZE = Integer.parseInt(System.getenv("THREAD_POOL_SIZE"));
+    private static final int THREAD_POOL_SIZE = getThreadPoolSize();
     private static final int TIMEOUT = 5000;
+
+    private static int getThreadPoolSize() {
+        String poolSize = System.getenv("THREAD_POOL_SIZE");
+        return poolSize != null ? Integer.parseInt(poolSize) : 10;
+    }
 
     public void startServer() {
         ExecutorService executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
