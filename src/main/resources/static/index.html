@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./reset.css" rel="stylesheet" />
+    <link href="./global.css" rel="stylesheet" />
+    <link href="./main.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <a href="/"><img src="./img/signiture.svg" /></a>
+        <ul class="header__menu">
+          <li class="header__menu__item">
+            {{loginSection}}
+          </li>
+          <li class="header__menu__item">
+            {{registerSection}}
+          </li>
+        </ul>
+      </header>
+      <div class="wrapper">
+        <ul class="article-list">
+          {{articleListSection}}
+        </ul>
+      </div>
+    </div>
+  </body>
+<footer>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("success") === "true") {
+      alert("환영합니다!");
+      document.querySelector('input[name="password"]').value = '';
+    }
+  </script>
+</footer>
+</html>

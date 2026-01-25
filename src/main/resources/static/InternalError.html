@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Internal Error</title>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .container { background-color: #F5F7FA; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .header { font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px; }
+        .message { font-size: 16px; color: #555; margin-bottom: 20px; }
+        .footer { font-size: 14px; color: #aaa; margin-top: 20px; text-align: center; }
+        .logo {
+            width: 180px;
+            height: 42px;
+            display: inline-block;
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <img src="./img/signiture.png" alt="signature">
+        </div>
+        <h2>내 잘못임...</h2>
+    </div>
+    <div class="message">
+        ${message}
+    </div>
+    <div class="footer">
+        <p>&#x00A9; softeer</p>
+    </div>
+</div>
+</body>
+</html>

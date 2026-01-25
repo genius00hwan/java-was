@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    {{alertMessage}}
+  });
+</script>
+<script src="../../preview.js" defer></script>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="../../reset.css" rel="stylesheet" />
+  <link href="../../global.css" rel="stylesheet" />
+</head>
+
+<body>
+<div class="container">
+  <header class="header">
+    <a href="/"><img src="../../img/signiture.svg" /></a>
+    <ul class="header__menu">
+      <li class="header__menu__item">
+        <a class="btn btn_contained btn_size_s" href="/article/write">글쓰기</a>
+      </li>
+      <li class="header__menu__item">
+        <form action="/logout" method="post" style="display:inline;">
+          <button class="btn btn_ghost btn_size_s" type="submit">
+            로그아웃
+          </button>
+        </form>
+      </li>
+    </ul>
+  </header>
+
+  <div class="page">
+    <h2 class="page-title">마이페이지</h2>
+
+    <form class="form" action="/user/update" method="post" enctype="multipart/form-data">
+      <div class="profile_container">
+        <div class="profile_box">
+          <div class="profile_image">
+            <!-- 현재 프로필 이미지 -->
+            <img class="profile" id="profile-preview" src="{{profileImage}}" alt="프로필 이미지" />
+          </div>
+          <!-- 프로필 이미지 바로 아래에 버튼 -->
+          <div style="text-align:center; margin-top:8px;">
+            <label class="btn_profile">
+              <div class="btn_container">프로필 이미지 수정</div>
+              <input
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  style="display:none;"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 닉네임 -->
+      <div class="textfield textfield_size_s input_margin">
+        <p class="title_textfield">닉네임</p>
+        <input
+            class="input_textfield"
+            name="nickname"
+            value="{{nickname}}"
+            autocomplete="username"
+            required />
+      </div>
+
+      <!-- 현재 비밀번호 -->
+      <div class="textfield textfield_size_s">
+        <p class="title_textfield">현재 비밀번호</p>
+        <input
+            class="input_textfield"
+            name="oldPassword"
+            type="password"
+            placeholder="현재 비밀번호를 입력해주세요"
+            autocomplete="current-password"
+            required
+        />
+      </div>
+
+      <!-- 새 비밀번호 -->
+      <div class="textfield textfield_size_s">
+        <p class="title_textfield">새 비밀번호</p>
+        <input
+            class="input_textfield"
+            name="newPassword"
+            type="password"
+            placeholder="비밀번호 변경 시 입력해주세요"
+            autocomplete="new-password"
+        />
+      </div>
+
+      <!-- 새 비밀번호 확인 -->
+      <div class="textfield textfield_size_s">
+        <p class="title_textfield">비밀번호 확인</p>
+        <input
+            class="input_textfield"
+            name="confirmPassword"
+            type="password"
+            placeholder="한 번 더 입력해주세요"
+            autocomplete="new-password"
+        />
+      </div>
+
+      <!-- ✅ 하나의 버튼으로 모두 저장 -->
+      <button
+          class="btn btn_contained btn_size_m input_margin"
+          type="submit"
+      >
+        변경사항 저장
+      </button>
+    </form>
+  </div>
+</div>
+</body>
+</html>
